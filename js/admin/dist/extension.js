@@ -104,6 +104,16 @@ System.register('flarum/statistics/components/StatisticsWidget', ['flarum/compon
                 var thisPeriodCount = _this2.getPeriodCount(entity, thisPeriod);
                 var lastPeriodCount = _this2.getPeriodCount(entity, _this2.getLastPeriod(thisPeriod));
                 var periodChange = lastPeriodCount > 0 && (thisPeriodCount - lastPeriodCount) / lastPeriodCount * 100;
+                var extra = '';
+
+                if (entity === 'users') {
+                  var activeUsersCount = _this2.getPeriodCount('activeUsers', thisPeriod);
+                  extra = m(
+                    'span',
+                    { className: 'StatisticsWidget-extra', title: activeUsersCount },
+                    app.translator.trans('flarum-statistics.admin.statistics.active_users_text', { count: abbreviateNumber(activeUsersCount) })
+                  );
+                }
 
                 return m(
                   'a',
@@ -129,7 +139,8 @@ System.register('flarum/statistics/components/StatisticsWidget', ['flarum/compon
                       icon('arrow-' + (periodChange > 0 ? 'up' : 'down')),
                       Math.abs(periodChange.toFixed(1)),
                       '%'
-                    ) : ''
+                    ) : '',
+                    extra
                   )
                 );
               }),

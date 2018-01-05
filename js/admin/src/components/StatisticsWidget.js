@@ -71,6 +71,16 @@ export default class StatisticsWidget extends DashboardWidget {
           const thisPeriodCount = this.getPeriodCount(entity, thisPeriod);
           const lastPeriodCount = this.getPeriodCount(entity, this.getLastPeriod(thisPeriod));
           const periodChange = lastPeriodCount > 0 && (thisPeriodCount - lastPeriodCount) / lastPeriodCount * 100;
+          let extra = '';
+
+          if (entity === 'users') {
+            const activeUsersCount = this.getPeriodCount('activeUsers', thisPeriod);
+            extra = (
+              <span className="StatisticsWidget-extra" title={activeUsersCount}>
+                {app.translator.trans('flarum-statistics.admin.statistics.active_users_text', {count: abbreviateNumber(activeUsersCount)})}
+              </span>
+            );
+          }
 
           return (
             <a className={'StatisticsWidget-entity'+(this.selectedEntity === entity ? ' active' : '')} onclick={this.changeEntity.bind(this, entity)}>
@@ -84,6 +94,7 @@ export default class StatisticsWidget extends DashboardWidget {
                     {Math.abs(periodChange.toFixed(1))}%
                   </span>
                 ) : ''}
+                {extra}
               </div>
             </a>
           );

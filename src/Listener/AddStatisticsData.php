@@ -61,6 +61,7 @@ class AddStatisticsData
     {
         $entities = [
             'users' => [User::query(), 'join_time'],
+            'activeUsers' => [User::query(), 'last_seen_time'],
             'discussions' => [Discussion::query(), 'start_time'],
             'posts' => [Post::where('type', 'comment'), 'time']
         ];
